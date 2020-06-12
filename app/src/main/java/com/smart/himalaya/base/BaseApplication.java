@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.smart.himalaya.db.DaoMaster;
 import com.smart.himalaya.db.DaoSession;
 import com.smart.himalaya.utils.Constants;

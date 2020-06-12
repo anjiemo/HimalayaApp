@@ -9,7 +9,7 @@ public class BaseActivity extends FragmentActivity {
     protected void onStart() {
         super.onStart();
         try {
-//            new RuntimeException("This APP was written by 2695734816@qq.com").printStackTrace();
+            new RuntimeException("This APP was written by 2695734816@qq.com").printStackTrace();
             LogUtil.w("Note!","================> This APP was written by 2695734816@qq.com");
         } catch (Exception e) {
             e.printStackTrace();
