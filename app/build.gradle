@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.smart.himalaya"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.smart.himalaya.db'
+//        targetGenDir 'src/test/java'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    //添加支持Java8
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //Gson(谷歌官方 Json 库)
+    implementation 'com.google.code.gson:gson:2.8.6'
+    //OkHttp（网络请求框架）
+    implementation 'com.squareup.okhttp3:okhttp:4.3.0'
+    implementation 'org.conscrypt:conscrypt-android:2.2.1'
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation 'com.android.support:recyclerview-v7:29.0.0'
+    //圆形图片控件 CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    //Glide(图片加载库)
+    implementation('com.github.bumptech.glide:glide:4.10.0') {
+        exclude group: "com.android.support"
+    }
+    //毕加索(图片加载库)
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    annotationProcessor "com.github.bumptech.glide:okhttp3-integration:4.8.0"
+    //Butter Knife
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    //TwinklingRefreshLayout（下拉刷新框架：https://github.com/lcodecorex/TwinklingRefreshLayout）
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+
+    //rxJava
+    implementation "io.reactivex.rxjava3:rxjava:3.0.2"
+    //GreenDao3.2(数据库框架)
+    implementation 'org.greenrobot:greendao:3.3.0'
+}
