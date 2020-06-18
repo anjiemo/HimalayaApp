@@ -3,7 +3,7 @@ package com.smart.himalaya.presenters;
 import com.smart.himalaya.data.XimalayaApi;
 import com.smart.himalaya.interfaces.ISearchCallback;
 import com.smart.himalaya.interfaces.ISearchPresenter;
-import com.smart.himalaya.utils.Constants;
+import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.LogUtil;
 import com.smart.himalaya.utils.ObjectTools;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;

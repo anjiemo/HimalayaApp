@@ -3,6 +3,7 @@ package com.smart.himalaya;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -14,17 +15,23 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.gyf.immersionbar.ImmersionBar;
 import com.smart.himalaya.adapters.PlayerTrackPagerAdapter;
 import com.smart.himalaya.base.BaseActivity;
+import com.smart.himalaya.callback.ISkinChangingCallback;
 import com.smart.himalaya.interfaces.IPlayerCallback;
 import com.smart.himalaya.presenters.PlayerPresenter;
 import com.smart.himalaya.utils.LogUtil;
 import com.smart.himalaya.utils.ObjectTools;
+import com.smart.himalaya.utils.SkinManager;
 import com.smart.himalaya.views.MyMarqueeView;
 import com.smart.himalaya.views.MyPopWindow;
+import com.smart.himalaya.views.PlayControllerView;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -78,9 +85,12 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
     private ValueAnimator mEnterBgAnimator;
     private ValueAnimator mOutBgAnimator;
     public final int BG_ANIMATION_DURATION = 800;
+    private PlayControllerView mPlayControllerView;
+    private ImageView mIvBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ImmersionBar.with(this).init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         initView();
@@ -122,6 +132,9 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
      */
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
+        if (ObjectTools.isNotEmpty(mPlayControllerView)) {
+            mPlayControllerView.setDuration(0).setPlaying(mPlayerPresenter.isPlaying());
+        }
         mControlBtn.setOnClickListener(v -> {
             //如果现在的状态是正在播放的，那么就暂停
             if (mPlayerPresenter.isPlaying()) {
@@ -205,7 +218,56 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
                 }
             }
         });
+        mPlayControllerView.setOnClickListener(v -> {
+//            loadPlugin(mSkinPluginPath, mSkinPluginPkg);
+            SkinManager.getInstance().changeSkin(mSkinPluginPath, mSkinPluginPkg, new ISkinChangingCallback() {
+
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    ToastUtils.showShort("换肤失败!");
+                }
+
+                @Override
+                public void onComplete() {
+                    ToastUtils.showShort("换肤成功!");
+                }
+            });
+        });
     }
+
+    private String mSkinPluginPath = Environment.getExternalStorageDirectory() + File.separator + "HimalayaPlugin.apk";
+    private String mSkinPluginPkg = "com.example.himalyaplugin";
+    private boolean isChoose = false;
+
+//    private void loadPlugin(String skinPluginPath, String skinPluginPkg) {
+//        try {
+//            AssetManager assetManager = AssetManager.class.newInstance();
+//            //获取addAssetPath方法
+//            Method addAssetPathMethod = assetManager.getClass().getMethod("addAssetPath", String.class);
+//            //调用addAssetPath方法，第一个参数是当前对象，第二个参数是插件包的路径
+//            addAssetPathMethod.invoke(assetManager, skinPluginPath);
+//            Resources superResources = getResources();
+//            Resources resources = new Resources(assetManager, superResources.getDisplayMetrics(), superResources.getConfiguration());
+//            ResourcesManager resourcesManager = new ResourcesManager(resources, skinPluginPkg);
+//            Drawable drawable;
+//            if (!isChoose) {
+//                drawable  = resourcesManager.getDrawableByName("img_player_bg");
+//            }else {
+//                drawable = resourcesManager.getDrawableByName("img_player_bg1");
+//            }
+//            isChoose = !isChoose;
+//            if (ObjectUtils.isNotEmpty(drawable)) {
+//                Glide.with(this).load(drawable).into(mIvBackground);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void switchPlayMode() {
         //根据当前的mode获取到下一个mode
@@ -253,6 +315,8 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
      * 找到各个控件
      */
     private void initView() {
+        mIvBackground = findViewById(R.id.ivBackground);
+        mPlayControllerView = findViewById(R.id.play_controller_view);
         mControlBtn = findViewById(R.id.play_or_pause_btn);
         mTotalDuration = findViewById(R.id.track_duration);
         mCurrentPosition = findViewById(R.id.current_position);
@@ -260,6 +324,21 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
         mPlayPreBtn = findViewById(R.id.play_pre);
         mPlayNextBtn = findViewById(R.id.player_next);
         mTrackTitleTv = findViewById(R.id.track_title);
+        String url = "http://img2.imgtn.bdimg.com/it/u=1070239342,3524453852&fm=26&gp=0.jpg";
+//        String url = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=236414941,2521132488&fm=26&gp=0.jpg";
+//        String url = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4264407004,1543928956&fm=26&gp=0.jpg";
+//        Glide.with(this).load(R.drawable.skin_img_player_bg).listener(new RequestListener<Drawable>() {
+//            @Override
+//            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+////                BaseApplication.getHandler().post(() -> ImageBlur.makeBlur(BaseApplication.getAppContext(), resource, mIvBackground));
+//                return false;
+//            }
+//        }).into(mIvBackground);
         if (!TextUtils.isEmpty(mTrackTitleText)) {
             mTrackTitleTv.setText(mTrackTitleText);
         }
@@ -267,7 +346,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
         //创建适配器
         mTrackPagerAdapter = new PlayerTrackPagerAdapter();
         //设置适配器
-        mTrackPageView.setAdapter(mTrackPagerAdapter);
+//        mTrackPageView.setAdapter(mTrackPagerAdapter);
         //切换播放模式的按钮
         mPlayerModeSwitchBtn = findViewById(R.id.player_mode_switch_btn);
         //播放器列表
@@ -281,6 +360,9 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
         if (ObjectTools.isNotEmpty(mControlBtn)) {
             mControlBtn.setImageResource(R.drawable.selector_player_pause);
         }
+        if (ObjectTools.isNotEmpty(mControlBtn)) {
+            mPlayControllerView.setDuration(600).setPlaying(true);
+        }
     }
 
     @Override
@@ -288,12 +370,18 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
         if (ObjectTools.isNotEmpty(mControlBtn)) {
             mControlBtn.setImageResource(R.drawable.selector_player_play);
         }
+        if (ObjectTools.isNotEmpty(mControlBtn)) {
+            mPlayControllerView.setDuration(600).setPlaying(false);
+        }
     }
 
     @Override
     public void onPlayStop() {
         if (ObjectTools.isNotEmpty(mControlBtn)) {
             mControlBtn.setImageResource(R.drawable.selector_player_pause);
+        }
+        if (ObjectTools.isNotEmpty(mControlBtn)) {
+            mPlayControllerView.setDuration(600).setPlaying(true);
         }
     }
 

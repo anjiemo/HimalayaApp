@@ -39,7 +39,7 @@ import com.smart.himalaya.interfaces.ISubscriptionCallback;
 import com.smart.himalaya.presenters.AlbumDetailPresenter;
 import com.smart.himalaya.presenters.PlayerPresenter;
 import com.smart.himalaya.presenters.SubscriptionPresenter;
-import com.smart.himalaya.utils.Constants;
+import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.ImageBlur;
 import com.smart.himalaya.utils.LogUtil;
 import com.smart.himalaya.views.MyMarqueeView;

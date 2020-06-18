@@ -1,15 +1,12 @@
 package com.smart.himalaya.presenters;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.smart.himalaya.base.BaseApplication;
 import com.smart.himalaya.beans.MyTrack;
 import com.smart.himalaya.db.DaoSession;
 import com.smart.himalaya.db.MyTrackDao;
-import com.smart.himalaya.utils.Constants;
-import com.smart.himalaya.utils.MyEntityClassCombiner;
+import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.ObjectTools;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 

@@ -34,4 +34,5 @@
     <string name="clear_all_history_tips_text">清除所有的历史记录</string>
     <string name="cancel_tips_text">取消</string>
     <string name="determine_tips_text">确定</string>
+    <string name="splash_tips_text">Copyright © 2019-2020 A Lonely Cat</string>
 </resources>

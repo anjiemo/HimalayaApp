@@ -16,4 +16,9 @@
     <color name="gold">#F9D21C</color>
 
     <color name="play_list_text_color">#7D828C</color>
+
+
+    <color name="skin_green">#00ff00</color>
+    <color name="skin_green_inner">#ff00ff</color>
+
 </resources>

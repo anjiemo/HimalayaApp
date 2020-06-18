@@ -40,5 +40,8 @@
 -keep interface com.ximalaya.ting.android.opensdk.** {*;}
 -keep class com.ximalaya.ting.android.opensdk.** { *; }
 
- -keep class com.gyf.immersionbar.* {*;}
- -dontwarn com.gyf.immersionbar.**
+-keep class com.gyf.immersionbar.* {*;}
+-dontwarn com.gyf.immersionbar.**
+
+-keep class com.tencent.** {*;}
+-dontwarn com.tencent.**

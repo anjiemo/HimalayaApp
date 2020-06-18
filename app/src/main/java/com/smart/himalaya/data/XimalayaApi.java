@@ -1,6 +1,6 @@
 package com.smart.himalaya.data;
 
-import com.smart.himalaya.utils.Constants;
+import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.ObjectTools;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;

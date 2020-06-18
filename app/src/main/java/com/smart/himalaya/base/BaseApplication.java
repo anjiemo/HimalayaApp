@@ -6,11 +6,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 
-import com.gyf.immersionbar.ImmersionBar;
+import com.blankj.utilcode.util.LogUtils;
 import com.smart.himalaya.db.DaoMaster;
 import com.smart.himalaya.db.DaoSession;
-import com.smart.himalaya.utils.Constants;
+import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.LogUtil;
+import com.smart.himalaya.utils.SkinManager;
+import com.tencent.smtt.sdk.QbSdk;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -25,6 +27,39 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SkinManager.getInstance().init(this);
+        initHimalayaSDK();
+        //初始化LogUtil
+        LogUtil.init(this.getPackageName(), false);
+        sHandler = new Handler();
+        sContext = getApplicationContext();
+        initGreenDao();
+        initX5Environment();
+    }
+
+    /**
+     * 初始化X5浏览器内核环境
+     */
+    private void initX5Environment() {
+        //非wifi情况下，主动下载x5内核
+        QbSdk.setDownloadWithoutWifi(true);
+        //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
+        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+            @Override
+            public void onViewInitFinished(boolean isSuccess) {
+                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                LogUtils.d("onViewInitFinished================x5内核状态：" + isSuccess);
+            }
+
+            @Override
+            public void onCoreInitFinished() {
+                LogUtils.d("onCoreInitFinished================x5核心初始化完成");
+            }
+        };
+        QbSdk.initX5Environment(this, cb);
+    }
+
+    private void initHimalayaSDK() {
         CommonRequest mXimalaya = CommonRequest.getInstanse();
         if (DTransferConstants.isRelease) {
             String mAppSecret = "8646d66d6abe2efd14f2891f9fd1c8af";
@@ -39,11 +74,6 @@ public class BaseApplication extends Application {
         }
         //初始化播放器
         XmPlayerManager.getInstance(this).init();
-        //初始化LogUtil
-        LogUtil.init(this.getPackageName(), false);
-        sHandler = new Handler();
-        sContext = getApplicationContext();
-        initGreenDao();
     }
 
     private void initGreenDao() {

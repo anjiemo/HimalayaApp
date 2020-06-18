@@ -1,24 +1,33 @@
 package com.smart.himalaya;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.ArrayUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.smart.himalaya.adapters.IndicatorAdapter;
 import com.smart.himalaya.adapters.MainContentAdapter;
 import com.smart.himalaya.base.BaseActivity;
+import com.smart.himalaya.base.BaseApplication;
 import com.smart.himalaya.interfaces.IPlayerCallback;
 import com.smart.himalaya.presenters.PlayerPresenter;
 import com.smart.himalaya.presenters.RecommendPresenter;
+import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.LogUtil;
 import com.smart.himalaya.utils.ObjectTools;
 import com.smart.himalaya.views.RoundRectImageView;
@@ -43,15 +52,53 @@ public class MainActivity extends BaseActivity implements IPlayerCallback {
     private ImageView mPlayControl;
     private PlayerPresenter mPlayerPresenter;
     private LinearLayout mPlayControlItem;
-    private RelativeLayout mSearchBtn;
+    private View mSearchBtn;
+    private View mFeedbackBtn;
+    private List<String> mPermissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initData();
         initEvent();
         initPresenter();
+    }
+
+    private void initData() {
+        mPermissions = ArrayUtils.asArrayList(Permission.Group.STORAGE);
+        mPermissions.add(Manifest.permission.ACCESS_WIFI_STATE);
+        mPermissions.add(Permission.READ_PHONE_STATE);
+    }
+
+    private void initPermissions() {
+        XXPermissions.with(this).permission(mPermissions)
+                .request(new OnPermission() {
+                    @Override
+                    public void hasPermission(List<String> granted, boolean isAll) {
+                        if (isAll) {
+                            jump();
+                        } else {
+                            ToastUtils.showShort("您还没有授予权限！");
+                        }
+                    }
+
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+                        if (quick) {
+                            LogUtils.d("noPermission: ============权限被永久拒绝了！");
+                        }
+                        XXPermissions.gotoPermissionSettings(BaseApplication.getAppContext());
+                    }
+                });
+    }
+
+    private void jump() {
+        Intent intent = new Intent(this, MakeComplaintsActivity.class);
+        intent.putExtra(Constants.STR_TITLE, "喜马拉雅FM - By QQ：2695734816");
+        intent.putExtra(Constants.STR_URL, Constants.MAKE_COMPLAINTS_URL);
+        startActivity(intent);
     }
 
     private void initPresenter() {
@@ -90,6 +137,7 @@ public class MainActivity extends BaseActivity implements IPlayerCallback {
             //跳转到播放器界面
             startActivity(new Intent(this, PlayerActivity.class));
         });
+        mFeedbackBtn.setOnClickListener(v -> initPermissions());
         mSearchBtn.setOnClickListener(v -> startActivity(new Intent(this, SearchActivity.class)));
     }
 
@@ -128,6 +176,8 @@ public class MainActivity extends BaseActivity implements IPlayerCallback {
         mSubTitle = findViewById(R.id.main_sub_title);
         mPlayControl = findViewById(R.id.main_play_control);
         mPlayControlItem = findViewById(R.id.main_play_control_item);
+        //反馈
+        mFeedbackBtn = findViewById(R.id.feedback_btn);
         //搜索
         mSearchBtn = findViewById(R.id.search_btn);
     }

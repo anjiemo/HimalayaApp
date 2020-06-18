@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/ivBaton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/img_play_page_needle"
+        android:translationZ="2dp" />
+
+    <FrameLayout
+        android:id="@+id/flRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivBaton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-34dp">
+
+        <ImageView
+            android:id="@+id/ivBorder"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_play_page_disc"
+            android:translationZ="1dp" />
+
+        <ImageView
+            android:id="@+id/ivInner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/img_default_cover" />
+
+    </FrameLayout>
+
+</RelativeLayout>

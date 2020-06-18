@@ -10,8 +10,11 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.smart.himalaya.R;
+import com.smart.himalaya.utils.ObjectTools;
 import com.smart.himalaya.views.RotatePhotoView;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
+
+import org.greenrobot.greendao.annotation.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,6 @@ public class PlayerTrackPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        Context context = container.getContext();
         View itemView = LayoutInflater.from(container.getContext()).inflate(R.layout.item_track_pager, container, false);
         container.addView(itemView);
         //设置数据

@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //OkHttp（网络请求框架）
     implementation 'com.squareup.okhttp3:okhttp:4.3.0'
+    implementation "com.squareup.okio:okio:2.6.0"
     implementation 'org.conscrypt:conscrypt-android:2.2.1'
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
     implementation 'com.android.support:recyclerview-v7:29.0.0'
@@ -77,4 +78,14 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     // fragment快速实现（可选）
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+    // 标题栏框架：https://github.com/getActivity/TitleBar
+    implementation 'com.hjq:titlebar:6.0'
+    // 工具类：https://github.com/Blankj/AndroidUtilCode
+    implementation 'com.blankj:utilcodex:1.29.0'
+    // 二维码：https://github.com/bingoogolapple/BGAQRCode-Android
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
+    //腾讯x5浏览器内核
+    implementation files('libs/tbs_sdk_thirdapp_v4.3.0.3_43903_sharewithdownloadwithfile_withoutGame_obfs_20200402_121309.jar')
+    //权限请求库，详见GitHub：https://github.com/getActivity/XXPermissions
+    implementation 'com.hjq:xxpermissions:6.2'
 }
