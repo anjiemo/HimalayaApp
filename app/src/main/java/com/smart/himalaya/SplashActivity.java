@@ -1,11 +1,21 @@
 package com.smart.himalaya;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
+
+import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ArrayUtils;
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.NotificationUtils;
+import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.gyf.immersionbar.ImmersionBar;
@@ -14,8 +24,13 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.smart.himalaya.base.BaseActivity;
 import com.smart.himalaya.base.BaseApplication;
+import com.smart.himalaya.beans.Execution;
+import com.smart.himalaya.config.Constants;
+import com.smart.himalaya.utils.ImageTools;
 import com.smart.himalaya.views.ProgressView;
+import com.smart.himalaya.receivers.MyPlayerReceiver;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +45,17 @@ public class SplashActivity extends BaseActivity {
     ImageView ivSplash;
     @BindView(R.id.progressView)
     ProgressView progressView;
+    private List<Execution> mExecutions = new ArrayList<>();
+    private RemoteViews mRemoteViews;
+
+    {
+        mExecutions.add(new Execution(R.id.ivNotifyPlayerModeSwitch, Constants.STAR, "收藏"));
+        mExecutions.add(new Execution(R.id.ivNotifyPlayPre, Constants.PLAY_PRE, "打开上一首"));
+        mExecutions.add(new Execution(R.id.ivNotifyPlayOrPause, Constants.PLAY_OR_PAUSE, "播放或者暂停"));
+        mExecutions.add(new Execution(R.id.ivNotifyPlayerNext, Constants.PLAY_NEXT, "打开下一首"));
+        mExecutions.add(new Execution(R.id.ivNotifyClose, Constants.PLAY_CLOSE, "关闭播放器"));
+        mExecutions.add(new Execution(R.id.rlNotifyLayout, Constants.OPEN_HOME, "打开首页"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +101,12 @@ public class SplashActivity extends BaseActivity {
                 ToastUtils.showLong("您拒绝了权限，部分功能将无法正常使用！");
             }
         });
+        NotificationUtils.ChannelConfig channelConfig = new NotificationUtils
+                .ChannelConfig("小米", "用于在小米手机上测试的通知", NotificationUtils.IMPORTANCE_MIN);
+        NotificationUtils.notify(1233, channelConfig, builder -> {
+            builder.setSmallIcon(R.drawable.ic_launcher_background);
+            builder.setContent(getRemoteView());
+        });
     }
 
     private void departures() {
@@ -86,5 +118,48 @@ public class SplashActivity extends BaseActivity {
     @OnClick(R.id.progressView)
     public void onViewClicked() {
         departures();
+    }
+
+    private RemoteViews getRemoteView() {
+        mRemoteViews = new RemoteViews(getPackageName(), R.layout.item_custom_notification);
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.img_app_icon);
+        if (ObjectUtils.isNotEmpty(drawable)) {
+            Bitmap bitmap = ImageUtils.drawable2Bitmap(drawable);
+            bitmap = ImageTools.getRoundedCornerBitmap(bitmap, ConvertUtils.dp2px(20));
+            mRemoteViews.setImageViewBitmap(R.id.ivNotifyLogo, bitmap);
+        } else {
+            mRemoteViews.setImageViewResource(R.id.ivNotifyLogo, R.drawable.img_app_icon);
+        }
+        mRemoteViews.setTextViewText(R.id.tvNotifyTitle, "歌曲名");
+        mRemoteViews.setTextViewText(R.id.tvNotifyContent, "歌手");
+        int what = 0;
+        for (Execution execution : mExecutions) {
+            setAction(execution.getViewId(), what++, execution.getAction());
+        }
+        return mRemoteViews;
+    }
+
+    /**
+     * 设置View的点击响应事件
+     *
+     * @param viewId View的资源id
+     * @param what   点击之后需要干什么
+     * @param action 点击之后的具体操作
+     */
+    private void setAction(int viewId, int what, String action) {
+        mRemoteViews.setOnClickPendingIntent(viewId, getClickPendingIntent(what, action));
+    }
+
+    /**
+     * 获取点击自定义通知栏上面的按钮或者布局时的延迟意图
+     *
+     * @param what 要执行的指令
+     * @return pendingIntent
+     */
+    public PendingIntent getClickPendingIntent(int what, String action) {
+        Intent intent = new Intent(this, MyPlayerReceiver.class);
+        intent.setAction(action);
+        int flag = PendingIntent.FLAG_UPDATE_CURRENT;
+        return PendingIntent.getBroadcast(this, what, intent, flag);
     }
 }

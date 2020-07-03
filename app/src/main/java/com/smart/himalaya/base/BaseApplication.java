@@ -3,6 +3,7 @@ package com.smart.himalaya.base;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 
@@ -12,6 +13,7 @@ import com.smart.himalaya.db.DaoSession;
 import com.smart.himalaya.config.Constants;
 import com.smart.himalaya.utils.LogUtil;
 import com.smart.himalaya.utils.SkinManager;
+import com.smart.himalaya.receivers.MyPlayerReceiver;
 import com.tencent.smtt.sdk.QbSdk;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -60,6 +62,7 @@ public class BaseApplication extends Application {
     }
 
     private void initHimalayaSDK() {
+        register();
         CommonRequest mXimalaya = CommonRequest.getInstanse();
         if (DTransferConstants.isRelease) {
             String mAppSecret = "8646d66d6abe2efd14f2891f9fd1c8af";
@@ -74,6 +77,14 @@ public class BaseApplication extends Application {
         }
         //初始化播放器
         XmPlayerManager.getInstance(this).init();
+    }
+
+    private void register() {
+        //动态注册广播
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        MyPlayerReceiver receiver = new MyPlayerReceiver();
+        registerReceiver(receiver, intentFilter);
     }
 
     private void initGreenDao() {

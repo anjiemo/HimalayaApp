@@ -31,7 +31,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="o">
-        <activity android:name=".TestFactoryActivity"></activity>
+        <activity android:name=".TestFactoryActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,6 +71,21 @@
                 <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_RELEASE_SERVICE" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".receivers.MyPlayerReceiver"
+            android:exported="true"
+            android:process=":player">
+            <intent-filter>
+                <action android:name="com.smart.himalaya.android.ACTION_CONTROL_PLAY_OR_PAUSE" />
+                <action android:name="com.smart.himalaya.android.ACTION_CONTROL_PLAY_PRE" />
+                <action android:name="com.smart.himalaya.android.ACTION_CONTROL_PLAY_NEXT" />
+                <action android:name="com.smart.himalaya.android.ACTION_CLOSE" />
+                <action android:name="com.smart.himalaya.android.ACTION_STAR" />
+                <action android:name="com.smart.himalaya.android.ACTION_OPEN_HOME" />
+            </intent-filter>
+        </receiver>
+
         <receiver
             android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
             android:exported="true"

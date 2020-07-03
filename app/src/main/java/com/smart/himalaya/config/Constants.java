@@ -28,4 +28,18 @@ public class Constants {
     public static final String KEY_PLUGIN_PATH = "plugin_path";
     public static final String KEY_PLUGIN_PKG = "plugin_pkg";
     public static final String KEY_PLUGIN_SUFFIX = "plugin_suffix";
+
+    //播放器通知栏控制相关
+    //播放或暂停
+    public static final String PLAY_OR_PAUSE = "com.smart.himalaya.android.ACTION_CONTROL_PLAY_OR_PAUSE";
+    //上一首
+    public static final String PLAY_PRE = "com.smart.himalaya.android.ACTION_CONTROL_PLAY_PRE";
+    //下一首
+    public static final String PLAY_NEXT = "com.smart.himalaya.android.ACTION_CONTROL_PLAY_NEXT";
+    //关闭通知栏并停止播放
+    public static final String PLAY_CLOSE = "com.smart.himalaya.android.ACTION_CLOSE";
+    //收藏
+    public static final String STAR = "com.smart.himalaya.android.ACTION_STAR";
+    //打开首页
+    public static final String OPEN_HOME = "com.smart.himalaya.android.ACTION_OPEN_HOME";
 }
