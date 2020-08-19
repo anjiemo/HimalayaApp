@@ -90,10 +90,14 @@
         <receiver
             android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
             android:exported="true"
-            android:process=":player" /> <!-- 适配华为（huawei）刘海屏 -->
+            android:process=":player" />
+
+        <!-- 适配华为（huawei）刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
+            android:value="true" />
+
+        <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />

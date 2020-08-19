@@ -1,6 +1,5 @@
 package com.smart.himalaya.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,8 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.smart.himalaya.R;
-import com.smart.himalaya.utils.ObjectTools;
 import com.smart.himalaya.views.RotatePhotoView;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
-
-import org.greenrobot.greendao.annotation.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;

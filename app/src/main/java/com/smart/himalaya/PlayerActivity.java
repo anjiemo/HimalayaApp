@@ -397,6 +397,8 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
 
     @Override
     public void onListLoad(List<Track> list) {
+        //如果网络请求到的数据为null，直接返回
+        if (list == null) return;
         LogUtil.d(TAG, "list --- > " + list);
         //把数据设置到适配器里
         if (ObjectTools.isNotEmpty(mTrackPagerAdapter)) {
