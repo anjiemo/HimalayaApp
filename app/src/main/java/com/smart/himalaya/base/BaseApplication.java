@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.smart.himalaya.CrashActivity;
+import com.smart.himalaya.MainActivity;
 import com.smart.himalaya.db.DaoMaster;
 import com.smart.himalaya.db.DaoSession;
 import com.smart.himalaya.config.Constants;
@@ -19,6 +21,8 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
+import cat.ereza.customactivityoncrash.config.CaocConfig;
+
 @SuppressLint("StaticFieldLeak")
 public class BaseApplication extends Application {
 
@@ -29,6 +33,10 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initSDK();
+    }
+
+    private void initSDK() {
         SkinManager.getInstance().init(this);
         initHimalayaSDK();
         //初始化LogUtil
@@ -37,6 +45,22 @@ public class BaseApplication extends Application {
         sContext = getApplicationContext();
         initGreenDao();
         initX5Environment();
+        // Crash 捕捉界面
+        CaocConfig.Builder.create()
+                //后台模式
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                //启用
+                .enabled(true)
+                //追踪活动
+                .trackActivities(true)
+                .minTimeBetweenCrashesMs(2000)
+                // 重启的 Activity
+                .restartActivity(MainActivity.class)
+                // 错误的 Activity
+                .errorActivity(CrashActivity.class)
+                // 设置监听器
+                //.eventListener(new YourCustomEventListener())
+                .apply();
     }
 
     /**

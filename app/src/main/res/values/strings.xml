@@ -35,4 +35,14 @@
     <string name="cancel_tips_text">取消</string>
     <string name="determine_tips_text">确定</string>
     <string name="splash_tips_text">Copyright © 2019-2020 A Lonely Cat</string>
+
+    <!-- 异常捕捉 -->
+    <string name="crash_error_hint">发生意外错误\n抱歉，给您带来不便</string>
+    <string name="crash_error_restart">重新启动</string>
+    <string name="crash_error_feedback">去反馈</string>
+    <string name="crash_error_log">查看日志</string>
+    <string name="crash_error_details">错误详情</string>
+    <string name="crash_error_info">错误信息</string>
+    <string name="crash_copy_log">复制日志</string>
+    <string name="crash_close">关闭</string>
 </resources>
