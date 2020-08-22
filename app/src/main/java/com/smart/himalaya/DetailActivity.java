@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -277,6 +278,8 @@ public class DetailActivity extends BaseActivity implements IAlbumDetailViewCall
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onAlbumLoaded(Album album) {
+        //如果返回的数据不为空时才加载到内存中
+        if (album == null) return;
         mCurrentAlbum = album;
         long id = album.getId();
         mCurrentId = id;
@@ -342,6 +345,11 @@ public class DetailActivity extends BaseActivity implements IAlbumDetailViewCall
 
     @Override
     public void onItemClick(List<Track> detailData, int position) {
+        //如果集合为空，则不执行后面的操作
+        if (detailData == null) {
+            ToastUtils.showShort("音频资源获取失败！");
+            return;
+        }
         //设置播放器的数据
         PlayerPresenter playerPresenter = PlayerPresenter.getPlayerPresenter();
         playerPresenter.setPlayList(detailData, position);
