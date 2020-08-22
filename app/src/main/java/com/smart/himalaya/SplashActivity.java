@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 
@@ -41,6 +43,7 @@ import butterknife.OnClick;
 
 public class SplashActivity extends BaseActivity {
 
+    private static final String TAG = SplashActivity.class.getSimpleName();
     @BindView(R.id.ivSplash)
     ImageView ivSplash;
     @BindView(R.id.progressView)
@@ -66,6 +69,8 @@ public class SplashActivity extends BaseActivity {
         initView();
     }
 
+    private int progress = 0;
+
     private void initView() {
         Glide.with(this).load(R.drawable.img_splash).into(ivSplash);
         List<String> permissions = ArrayUtils.asArrayList(Permission.Group.STORAGE);
@@ -74,24 +79,17 @@ public class SplashActivity extends BaseActivity {
         XXPermissions.with(this).permission(permissions).request(new OnPermission() {
             @Override
             public void hasPermission(List<String> granted, boolean isAll) {
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    int progress = 0;
-
+                progress = 0;
+                mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        BaseApplication.getHandler().post(() -> {
-                            if (progress > ProgressView.FINISH_CODE) {
-                                return;
-                            }
-                            BaseApplication.getHandler().post(() -> progressView.setProgress(progress));
-                            progress++;
-                        });
-                    }
-                }, 0, 20);
-                progressView.setOnProgressChangedListener(currentProgress -> {
-                    if (currentProgress == ProgressView.FINISH_CODE) {
-                        departures();
+                        if (progress < ProgressView.FINISH_CODE) {
+                            mHandler.postDelayed(this, 24);
+                        } else {
+                            departures();
+                        }
+                        progressView.setProgress(progress);
+                        progress++;
                     }
                 });
             }
@@ -99,6 +97,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void noPermission(List<String> denied, boolean quick) {
                 ToastUtils.showLong("您拒绝了权限，部分功能将无法正常使用！");
+                departures();
             }
         });
         NotificationUtils.ChannelConfig channelConfig = new NotificationUtils

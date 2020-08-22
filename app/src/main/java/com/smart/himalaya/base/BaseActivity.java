@@ -2,6 +2,7 @@ package com.smart.himalaya.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.view.InflateException;
@@ -37,6 +38,7 @@ public class BaseActivity extends AppCompatActivity implements ISkinChangedListe
     private Method mCreateViewMethod = null;
     static final Class<?>[] sCreateViewSignature = new Class[]{View.class, String.class, Context.class, AttributeSet.class};
     private final Object[] mCreateViewArgs = new Object[4];
+    protected Handler mHandler = new Handler();
 
     @Override
     protected void onStart() {
