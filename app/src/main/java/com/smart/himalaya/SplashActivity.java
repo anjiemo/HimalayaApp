@@ -50,6 +50,7 @@ public class SplashActivity extends BaseActivity {
     ProgressView progressView;
     private List<Execution> mExecutions = new ArrayList<>();
     private RemoteViews mRemoteViews;
+    private Runnable mTask;
 
     {
         mExecutions.add(new Execution(R.id.ivNotifyPlayerModeSwitch, Constants.STAR, "收藏"));
@@ -80,7 +81,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void hasPermission(List<String> granted, boolean isAll) {
                 progress = 0;
-                mHandler.post(new Runnable() {
+                mTask = new Runnable() {
                     @Override
                     public void run() {
                         if (progress < ProgressView.FINISH_CODE) {
@@ -91,7 +92,8 @@ public class SplashActivity extends BaseActivity {
                         progressView.setProgress(progress);
                         progress++;
                     }
-                });
+                };
+                mHandler.post(mTask);
             }
 
             @Override
@@ -108,7 +110,16 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onDetachedFromWindow() {
+        mHandler.removeCallbacks(mTask);
+        isJump = true;
+    }
+
+    private boolean isJump = false;
+
     private void departures() {
+        if (isJump) return;
         startActivity(new Intent(SplashActivity.this, MainActivity.class));
 //        startActivity(new Intent(SplashActivity.this, TestFactoryActivity.class));
         finish();

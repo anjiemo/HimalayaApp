@@ -44,15 +44,21 @@
         <activity
             android:name=".MakeComplaintsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".SearchActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PlayerActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
 
         <service
