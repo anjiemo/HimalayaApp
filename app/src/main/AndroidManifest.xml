@@ -5,12 +5,23 @@
     android:versionCode="1"
     android:versionName="1.0"
     tools:ignore="GradleOverrides">
+
     <!-- 连接网络 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 用于管理监听网络状态的变化 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 用于管理监听网络状态的变化 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 用于管理监听网络状态的变化 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 获取电话的状态,在打电话的时候暂停播放 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- target >=28 需要设置此权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 用于管理监听网络状态的变化 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- 用于管理监听网络状态的变化 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 用于管理监听网络状态的变化 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <!-- 获取电话的状态,在打电话的时候暂停播放 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- target >=28 需要设置此权限 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
@@ -54,11 +65,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <service

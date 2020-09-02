@@ -63,6 +63,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:text="00:00"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <SeekBar
@@ -81,6 +82,7 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00:00"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
         </RelativeLayout>

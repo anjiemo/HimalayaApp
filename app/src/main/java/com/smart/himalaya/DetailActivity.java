@@ -113,8 +113,8 @@ public class DetailActivity extends BaseActivity implements IAlbumDetailViewCall
         mPlayerPresenter.registerViewCallback(this);
         //订阅相关的Presenter
         mSubscriptionPresenter = SubscriptionPresenter.getInstance();
-        mSubscriptionPresenter.loadSubscriptionList();
         mSubscriptionPresenter.registerViewCallback(this);
+        mSubscriptionPresenter.loadSubscriptionList();
     }
 
     @Override
@@ -254,7 +254,6 @@ public class DetailActivity extends BaseActivity implements IAlbumDetailViewCall
             mRefreshLayout.finishLoadmore();
             mIsLoaderMore = false;
         }
-
         mCurrentTracks = tracks;
         //判断数据结果，根据结果控制UI显示
         if (tracks == null || tracks.size() == 0) {
@@ -298,7 +297,6 @@ public class DetailActivity extends BaseActivity implements IAlbumDetailViewCall
         if (mAlbumAuthor != null) {
             mAlbumAuthor.setText(album.getAnnouncer().getNickname());
         }
-
         //做毛玻璃效果
         if (mLargeCover != null) {
             Glide.with(this)

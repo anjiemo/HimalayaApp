@@ -123,7 +123,6 @@ public class PlayerActivity extends BaseActivity implements IPlayerCallback, Vie
         //释放资源
         if (ObjectTools.isNotEmpty(mPlayerPresenter)) {
             mPlayerPresenter.unRegisterViewCallback(this);
-            mPlayerPresenter = null;
         }
     }
 
