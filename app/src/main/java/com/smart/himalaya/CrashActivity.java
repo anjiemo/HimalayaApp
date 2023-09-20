@@ -13,11 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.smart.himalaya.base.BaseActivity;
 import com.smart.himalaya.config.Constants;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 
@@ -31,8 +28,8 @@ public class CrashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crash);
-        ButterKnife.bind(this);
         initData();
+        initEvent();
     }
 
     private void initData() {
@@ -43,7 +40,12 @@ public class CrashActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.btn_crash_restart, R.id.btn_crash_make_complaints, R.id.btn_crash_log})
+    private void initEvent() {
+        findViewById(R.id.btn_crash_restart).setOnClickListener(this::onClick);
+        findViewById(R.id.btn_crash_make_complaints).setOnClickListener(this::onClick);
+        findViewById(R.id.btn_crash_log).setOnClickListener(this::onClick);
+    }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_crash_restart:

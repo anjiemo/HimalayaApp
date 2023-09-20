@@ -44,7 +44,9 @@
         tools:targetApi="o">
         <activity android:name=".TestFactoryActivity" />
         <activity android:name=".CrashActivity" />
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

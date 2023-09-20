@@ -34,8 +34,6 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 
 /**
@@ -44,11 +42,8 @@ import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 public class MakeComplaintsActivity extends BaseActivity {
 
     private static final String TAG = "MakeComplaintsActivity";
-    @BindView(R.id.webView)
     X5WebView webView;
-    @BindView(R.id.titleBar)
     TitleBar titleBar;
-    @BindView(R.id.progressHorizontal)
     ProgressBar progressHorizontal;
     private String mTitle = null;
     private String mUrl;
@@ -61,7 +56,6 @@ public class MakeComplaintsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).init();
         setContentView(R.layout.activity_make_complaints);
-        ButterKnife.bind(this);
         initView();
         initPresenter();
     }
@@ -94,11 +88,11 @@ public class MakeComplaintsActivity extends BaseActivity {
         webView.setOnLongClickListener(v -> {
             WebView.HitTestResult result = webView.getHitTestResult();
             switch (result.getType()) {
-                case WebView.HitTestResult.IMAGE_TYPE: //图片类型
-                case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: //带有链接的图片类型
+                case WebView.HitTestResult.IMAGE_TYPE: // 图片类型
+                case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
                     new Thread(() -> {
                         try {
-                           String message = parseQrImage(result);
+                            String message = parseQrImage(result);
                             BaseApplication.getHandler().post(() -> ToastUtils.showShort(message));
                             Log.d(TAG, "initPresenter: ============" + message);
                         } catch (Exception e) {
@@ -129,6 +123,10 @@ public class MakeComplaintsActivity extends BaseActivity {
 //                //解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色，还有一些重载方法
 //                .fitsSystemWindows(true)
 //                .init();
+        webView = findViewById(R.id.webView);
+        titleBar = findViewById(R.id.titleBar);
+        progressHorizontal = findViewById(R.id.progressHorizontal);
+
         initWebClient();
         Intent intent = getIntent();
         mUrl = intent.getStringExtra(Constants.STR_URL);
@@ -196,7 +194,7 @@ public class MakeComplaintsActivity extends BaseActivity {
     }
 
     private void openImageChooserActivity() {
-        //调用自己的图库
+        // 调用自己的图库
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("image/*");
@@ -206,7 +204,7 @@ public class MakeComplaintsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FILE_CHOOSER_RESULT_CODE) { //处理返回的图片，并进行上传
+        if (requestCode == FILE_CHOOSER_RESULT_CODE) { // 处理返回的图片，并进行上传
             if (null == uploadMessage && null == uploadMessageAboveL) return;
             Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
             if (uploadMessageAboveL != null) {

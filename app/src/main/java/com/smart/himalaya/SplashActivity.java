@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 
@@ -25,28 +23,19 @@ import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.smart.himalaya.base.BaseActivity;
-import com.smart.himalaya.base.BaseApplication;
 import com.smart.himalaya.beans.Execution;
 import com.smart.himalaya.config.Constants;
+import com.smart.himalaya.receivers.MyPlayerReceiver;
 import com.smart.himalaya.utils.ImageTools;
 import com.smart.himalaya.views.ProgressView;
-import com.smart.himalaya.receivers.MyPlayerReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SplashActivity extends BaseActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
-    @BindView(R.id.ivSplash)
     ImageView ivSplash;
-    @BindView(R.id.progressView)
     ProgressView progressView;
     private List<Execution> mExecutions = new ArrayList<>();
     private RemoteViews mRemoteViews;
@@ -66,13 +55,15 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).init();
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
         initView();
+        initEvent();
     }
 
     private int progress = 0;
 
     private void initView() {
+        ivSplash = findViewById(R.id.ivSplash);
+        progressView = findViewById(R.id.progressView);
         Glide.with(this).load(R.drawable.img_splash).into(ivSplash);
         List<String> permissions = ArrayUtils.asArrayList(Permission.Group.STORAGE);
         permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
@@ -110,6 +101,10 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
+    private void initEvent() {
+        findViewById(R.id.progressView).setOnClickListener((view) -> onViewClicked());
+    }
+
     @Override
     public void onDetachedFromWindow() {
         mHandler.removeCallbacks(mTask);
@@ -125,7 +120,6 @@ public class SplashActivity extends BaseActivity {
         finish();
     }
 
-    @OnClick(R.id.progressView)
     public void onViewClicked() {
         departures();
     }
